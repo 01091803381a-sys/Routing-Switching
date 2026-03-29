@@ -1,162 +1,143 @@
-# 🌐 네트워크 기초 및 데이터센터 구조 (NO.1)
+# 📘 Network Engineering: Standard Technical Reference (음슴체 Ver.)
 
-## 1. 네트워크 4대 핵심 구성 요소
-| 요소 | 설명 | 주요 역할 |
-| :--- | :--- | :--- |
-| **Host** | 네트워크 종단(End-point) 장치 | 서비스 이용 및 제공 (PC, 서버, 스마트폰 등) |
-| **Switch** | 동일 네트워크 내부 데이터 전달 | MAC 주소 기반 전송, L2 계층, LAN 구축 |
-| **Router** | 서로 다른 네트워크 연결 | IP 주소 기반 최적 경로(Routing) 선택, WAN 연결 |
-| **Medium** | 물리적 전송 매체 | 케이블(광, 구리), 무선 등 데이터가 이동하는 통로 |
+## 1. 네트워크 정의 및 필수 구성 요소 (Definition & Core Components)
+네트워크는 복수의 단말이 표준 프로토콜(Protocol)에 따라 상호 간 데이터 자원을 공유하도록 연결된 **데이터 전송 인프라(Data Transmission Infrastructure)**를 의미함.
+
+### 1.1 네트워크 4대 필수 구성 요소 (4 Core Components)
+1. **End Device (최종 단말):** 데이터의 발신 및 최종 수신지 (PC, Server, Smartphone, IoT Device 등).
+2. **Intermediary Device (중간 장비):** 데이터 경로 결정 및 트래픽 중계 (L2 Switch, L3 Router, Firewall, Wireless AP 등).
+3. **Network Media (전송 매체):** 데이터가 물리적으로 이동하는 통로 (UTP, Fiber Optic, Radio Waves 등).
+4. **Network Protocol (통신 규약):** 데이터 송수신 형식 및 타이밍을 제어하는 논리적 규칙 (TCP/IP 등).
+
+---
+
+## 2. 데이터 통신 체계 (Data Communication System)
+
+### 2.1 데이터 통신의 5대 요소 (5 Elements)
+1. **Message (메시지):** 통신의 대상이 되는 정보 유닛.
+2. **Sender (송신자):** 메시지를 생성하여 전송을 개시하는 단말.
+3. **Receiver (수신자):** 전송된 데이터를 처리하는 최종 목적지 단말.
+4. **Transmission Medium (전송 매체):** 메시지가 전달되는 물리적 경로.
+5. **Protocol (통신 규약):** 장치 간 상호 운용성(Interoperability)을 보장하는 통신 규칙.
 
 
 
 ---
 
-## 2. 데이터 통신과 패킷 (Data Communication)
+## 3. 네트워크 분류 (Network Classification)
 
-### 📝 데이터 통신 5요소
-1. **Sender (송신자)**: 메시지를 보내는 장치
-2. **Receiver (수신자)**: 메시지를 받는 장치
-3. **Message (메시지)**: 전달하고자 하는 정보
-4. **Medium (매체)**: 데이터 전송 경로
-5. **Protocol (프로토콜)**: 통신을 위한 상호 약속 및 규칙
+### 3.1 지리적 범위에 따른 분류 (Coverage-based)
+- **PAN (Personal Area Network):** 개인 공간 내 디바이스 간 초단거리 무선 통신 (Bluetooth, Zigbee).
+- **LAN (Local Area Network):** 제한된 지역 내 고속 통신망. 높은 대역폭과 낮은 지연율(Latency) 특징임.
+- **MAN (Metropolitan Area Network):** 도시 규모의 연결망. 복수의 LAN을 통합하는 기간망임.
+- **WAN (Wide Area Network):** ISP 회선을 임대하여 국가 및 대륙 간을 연결하는 광역망임.
 
-### 📦 패킷(Packet) 분할 전송
-* **정의**: 데이터를 전송하기 위해 나눈 작은 단위 (`Header` 주소 + `Payload` data)
-* **이점**:
-    * 네트워크 점유 시간을 단축하여 효율성 향상
-    * 전송 오류 시 해당 패킷만 **재전송**하여 빠른 복구 가능
-    * 다수 사용자의 데이터를 동시에 처리(Multiplexing) 가능
+### 3.2 기술 및 목적 기반 분류 (Specialized Networks)
+- **VPN (Virtual Private Network):** 공용망 위에서 터널링과 암호화로 구축한 논리적 가상 전용망임.
+- **SDN (Software Defined Networking):** 제어부(Control Plane)와 전송부(Data Plane)를 분리하여 중앙 제어함.
+- **CDN (Content Delivery Network):** 분산된 Edge Server를 통해 콘텐츠를 사용자 근거리에서 캐싱 및 전송함.
+- **SAN (Storage Area Network):** 서버와 저장 장치 간 블록 레벨 데이터 전송을 위한 전용 고속망(FC, iSCSI)임.
 
 ---
 
-## 3. 데이터센터 네트워크 아키텍처
+## 4. 계층 참조 모델 및 PDU (Reference Models & PDU)
 
-### 🏢 전통적 3계층 구조 (Hierarchical)
-* **Core Layer**: 대용량 트래픽의 초고속 전송 및 백본 역할
-* **Distribution Layer**: 트래픽 집계, 정책 적용 및 라우팅 중계
-* **Access Layer**: 서버와 직접 연결되는 최하단 지점 (L2 스위칭)
+계층화된 모델은 통신 프로세스를 모듈화하여 독립 처리를 가능하게 함. 각 계층의 데이터 단위를 **PDU (Protocol Data Unit)**라고 함.
 
-### 🌲 현대적 Spine-Leaf 구조
-* **Spine Switch**: 상위 핵심 네트워크 (모든 Leaf와 연결)
-* **Leaf Switch**: 서버와 직접 연결되는 접점
-* **장점**: 수평적 확장 용이성, 균등한 지연 시간(Latency), 높은 대역폭 확보
-
-
-
----
-
-## 4. 네트워크 통신 모델 및 캡슐화
-
-### 📑 계층 모델 비교 (OSI 7 Layer vs TCP/IP)
-| OSI 7 Layer | TCP/IP Layer | 주요 프로토콜 및 특징 |
-| :--- | :--- | :--- |
-| **7. Application** | **4. Application** | HTTP, DNS, FTP (사용자 인터페이스) |
-| **6. Presentation** | **4. Application** | 데이터 표현(JPEG, ASCII), 암호화, 압축 |
-| **5. Session** | **4. Application** | 통신 세션 유지 및 관리 |
-| **4. Transport** | **3. Transport** | **TCP/UDP** (포트 번호, 전송 신뢰성) |
-| **3. Network** | **2. Internet** | **IP**, ICMP, ARP (패킷 라우팅) |
-| **2. Data Link** | **1. Network Access** | **Ethernet**, MAC 주소 (프레임 전달) |
-| **1. Physical** | **1. Network Access** | 물리적 신호 (비트, 케이블) |
-
-
-
-### 💊 데이터 캡슐화 5단계 (Encapsulation)
-1. **Data**: 상위 계층 메시지
-2. **Segment** (L4): 포트 번호 헤더 추가
-3. **Packet** (L3): IP 주소 헤더 추가
-4. **Frame** (L2): MAC 주소 헤더 및 트레일러 추가
-5. **Bits** (L1): 물리적 전기/광 신호로 변환
-
-# 🌐 네트워크 주소 체계 및 통신 흐름
-
-## 1. MAC 주소 vs IP 주소: 결정적 차이점 3가지
-네트워크 통신을 위해 반드시 필요한 두 주소의 핵심 차이점입니다.
-
-| 구분 | MAC 주소 (Physical) | IP 주소 (Logical) |
-| :--- | :--- | :--- |
-| **주소의 성격** | **물리적 고유 주소**: NIC(랜카드) 제조 시 할당된 하드웨어 식별자 | **논리적 가상 주소**: 네트워크 환경에 따라 소프트웨어적으로 할당 |
-| **변경 가능성** | **불변(Static)**: 장비를 교체하지 않는 한 바뀌지 않음 | **가변(Dynamic)**: 접속 위치나 설정에 따라 수시로 변경 가능 |
-| **작동 범위** | **L2 (Data Link)**: 동일 네트워크(LAN) 내 인접 장비 간 전달 | **L3 (Network)**: 전 세계 인터넷 망을 통한 목적지 경로 배정 |
-
-
-
----
-
-## 2. ARP (Address Resolution Protocol)
-**목적**: 송신자가 목적지의 **IP 주소는 알지만, 실제 전송에 필요한 MAC 주소를 모를 때** 수행하는 주소 결정 프로토콜입니다.
-
-### 🔄 ARP 동작 프로세스 (Missing Part 보완)
-데이터가 전달되는 상세 흐름은 다음과 같습니다.
-
-1. **ARP Cache 조회**: 송신 호스트는 자신의 메모리에 있는 'ARP Table'을 먼저 확인합니다. (이미 알고 있다면 바로 전송)
-2. **ARP Request (Broadcast)**: 테이블에 없다면, 네트워크 전체에 **"이 IP 주소 가진 사람 MAC 주소 좀 알려줘!"**라고 외칩니다.
-3. **ARP Reply (Unicast)**: 해당 IP를 가진 장비만 **"그거 나야! 내 MAC 주소는 이거야"**라고 송신자에게 응답합니다.
-4. **ARP Table 업데이트**: 송신자는 받은 MAC 주소를 테이블에 저장(Caching)하여 다음 통신 시 재사용합니다.
-5. **데이터 전송 (Frame 생성)**: 드디어 목적지 MAC 주소를 넣어 2계층 프레임을 완성하고 데이터를 보냅니다.
-
-
-
----
-
-## 3. 데이터 전달 단계별 흐름 요약
-실제 호스트 간 통신이 일어나는 전체 메커니즘입니다.
-
-* **Step 1: IP 주소 확인** - 응용 계층에서 생성된 데이터가 목적지 IP 주소를 확인합니다.
-* **Step 2: 라우팅 결정** - 목적지가 동일 네트워크인지, 외부 네트워크(게이트웨이 필요)인지 판단합니다.
-* **Step 3: ARP 수행** - 목적지(혹은 게이트웨이)의 MAC 주소를 획득합니다.
-* **Step 4: 캡슐화 (Encapsulation)** - L3 패킷에 L2 헤더(MAC 주소)를 붙여 **프레임(Frame)**을 생성합니다.
-* **Step 5: 물리적 전송** - 비트(Bit) 신호로 변환되어 매체를 통해 전달됩니다.
-
----
-🌐 L2 스위칭 아키텍처 및 주소 결정 메커니즘 (NO.2)
-
-## 1. 하드웨어 비교 분석: Hub vs Switch
-동일 네트워크 세그먼트 내에서 데이터를 중계하는 두 장치의 핵심적인 기술적 차이점입니다.
-
-| 구분 | 허브 (Hub / L1) | 스위치 (Switch / L2) | 기술적 이점 |
+| OSI 7 Layer (Full Name) | TCP/IP 4 Layer | PDU (Data Unit) | 식별 주소 및 프로토콜 |
 | :--- | :--- | :--- | :--- |
-| **작동 방식** | **Flooding**: 모든 포트로 신호 복제 | **Forwarding**: 목적지 포트로만 전달 | 대역폭 낭비 방지 |
-| **주소 인식** | 인식 불가 (L1 물리 계층) | **MAC Address** 기반 인식 (L2) | 지능적 경로 선택 |
-| **충돌 영역** | 모든 포트가 하나의 **Collision Domain** 공유 | **포트별 독립 Collision Domain** 제공 | 트래픽 충돌 원천 차단 |
-| **전송 모드** | Half-Duplex (전송 중 수신 불가) | **Full-Duplex** (동시 송수신 가능) | 전용 대역폭 보장 |
+| **7. Application Layer** | **4. Application** | **Data / Payload** | Port (HTTP, DNS, FTP) |
+| **6. Presentation Layer** | (Application 통합) | **Data** | Encryption, Encoding |
+| **5. Session Layer** | (Application 통합) | **Data** | Session Control |
+| **4. Transport Layer** | **3. Transport** | **Segment** | **Port Number** (TCP/UDP) |
+| **3. Network Layer** | **2. Internet** | **Packet** | **IP Address** (ICMP, ARP) |
+| **2. Data Link Layer** | **1. Network Access** | **Frame** | **MAC Address** (Ethernet) |
+| **1. Physical Layer** | **1. Network Access** | **Bits** | 전압, 광신호 (L1 Signal) |
+
+
 
 ---
 
-## 2. 스위칭 5대 핵심 동작 (Switching Behaviors)
-스위치는 유입되는 프레임의 헤더를 검사하여 **ASIC** 기반의 **CAM(Content Addressable Memory)** 테이블을 동적으로 관리합니다.
+## 5. 데이터 처리 프로세스 (Encapsulation & De-encapsulation)
 
-1. **Learning (학습):** 유입된 프레임의 **Source MAC** 주소를 추출하여 수신 포트 번호와 매핑/저장.
-2. **Flooding (범람):** 목적지 MAC이 테이블에 없거나(**Unknown Unicast**), **Broadcast**인 경우 수신 포트 제외 전 포트 송출.
-3. **Forwarding (전달):** 목적지 MAC이 테이블에 존재할 경우 해당 포트로만 데이터 정밀 전송 (**Unicast**).
-4. **Filtering (차단):** 목적지 포트 이외의 경로로 데이터가 유출되지 않도록 하드웨어적으로 차단.
-5. **Aging (에이징):** 일정 시간 트래픽이 없는 엔트리를 삭제하여 테이블 가용성 확보 (**Dynamic Aging**).
+### 5.1 Encapsulation (캡슐화) 프로세스
+상위 계층 데이터가 하위 계층으로 전달되며 제어 정보인 **Header**가 추가되는 과정임.
+1. **L4 (Transport):** Data에 **L4 Header(Port)**를 추가하여 **Segment** 생성함.
+2. **L3 (Network):** Segment에 **L3 Header(IP Address)**를 추가하여 **Packet** 생성함.
+3. **L2 (Data Link):** Packet에 **L2 Header(MAC)**와 오류 검출용 **L2 Trailer(FCS)**를 추가하여 **Frame** 생성함.
+4. **L1 (Physical):** Frame을 물리적 매체용 **Bits**로 변환하여 송출함.
 
----
 
-## 3. ARP (Address Resolution Protocol: 주소 결정 프로토콜)
-**목적**: 송신자가 목적지의 **IP 주소는 알지만, 실제 전송에 필요한 MAC 주소를 모를 때** 수행하는 주소 결정 절차입니다.
-
-### 🔄 스위칭 및 ARP 통합 프로세스 (Missing Part 보완)
-데이터가 전달되는 상세 논리 흐름은 다음과 같습니다.
-
-1. **ARP Cache 조회:** 송신 호스트는 자신의 메모리에 있는 'ARP Table'을 먼저 확인합니다.
-2. **ARP Request (Broadcast):** 테이블에 정보가 없다면, 네트워크 전체에 **브로드캐스트 프레임**을 송출합니다.
-3. **Switch Learning:** 스위치는 요청 프레임의 **Source MAC**을 학습하여 CAM 테이블에 기록합니다.
-4. **Switch Flooding:** 목적지가 브로드캐스트이므로 스위치는 모든 포트로 프레임을 복제하여 전파합니다.
-5. **ARP Reply (Unicast):** 타겟 호스트가 자신의 MAC 주소를 담아 **유니캐스트**로 응답하며, 스위치는 이를 다시 학습합니다.
-6. **Data Transmit:** 최종적으로 확보된 MAC 주소를 기반으로 실제 데이터를 유니캐스트로 포워딩합니다.
 
 ---
 
-## 4. 하드웨어 가속 저장소: CAM Table
-* **정의:** MAC 주소 테이블의 하드웨어 구현체로, **Exact Match** 검색에 최적화된 특수 메모리.
-* **특징:** 검색 속도가 $O(1)$로 일정하여 지연 시간(Latency)을 최소화하며, ASIC 내부에서 병렬 처리됨.
-* **한계:** 물리적인 브로드캐스트 도메인을 나누지 못해 대규모 네트워크에서 트래픽 집중 발생 가능.
+## 6. Layer 2 Switch: 물리 주소 기반 통신
+
+### 6.1 L2 Switch 주요 기능 (5F Process)
+**MAC (Media Access Control) Address Table**을 참조하여 **Collision Domain(충돌 도메인)**을 격리함.
+1. **Learning:** 수신 프레임의 Source MAC을 식별하여 포트와 매핑 기록함.
+2. **Flooding:** Destination MAC 정보가 없거나 Broadcast일 경우 수신 포트 제외 전 포트 송출함.
+3. **Forwarding:** 목적지 MAC 포트가 확인된 경우 해당 포트로만 1:1 전송함.
+4. **Filtering:** 목적지 포트가 수신 포트와 동일할 경우 타 포트 전송 차단함.
+5. **Aging:** 타이머를 통해 일정 시간 통신 없는 엔트리를 삭제하여 메모리 최적화함.
+
+### 6.2 물리 특성 및 장단점
+- **Full-Duplex (전이중 통신):** TX/RX 선로를 물리적으로 분리하여 충돌 방지 및 동시 송수신 지원함.
+- **장점:** ASIC 기반 하드웨어 스위칭으로 저지연 고속 전송 및 **VLAN**을 통한 브로드캐스트 도메인 격리 지원함.
+- **단점:** 루프(Loop) 발생 시 데이터 무한 복제되는 **Broadcast Storm**에 취약함 (STP 적용 필수임).
+
+
 
 ---
 
-## 5. 인프라 설계의 한계 및 솔루션
-* **한계점:** 스위치는 Collision Domain은 격리하나 **Broadcast Domain은 분리하지 못함.** 노드 증가 시 트래픽 과부하 발생.
-* **VLAN (Virtual LAN):** 브로드캐스트 도메인을 논리적으로 분할하여 트래픽 최적화 및 보안 경계 구축.
-* **Inter-VLAN Routing:** 분할된 VLAN 간의 통신은 **L3 Switch(SVI)** 또는 **Router**를 통한 라우팅 필수.
+## 7. Layer 3 Router: 논리 주소 기반 통신
+
+### 7.1 주요 기능 및 서비스
+- **Routing:** 네트워크 간 **Best Path (최적 경로)**를 결정하고 패킷을 중계함.
+- **NAT (Network Address Translation):** Private IP를 Public IP로 변환하여 주소 효율화 및 내부 시스템 은닉함.
+- **DHCP (Dynamic Host Configuration Protocol):** IP, Subnet Mask, Gateway 정보를 자동 할당함.
+
+### 7.2 최적 경로 결정 로직
+- **Metric:** 경로 선정 수치 (Hop Count, Bandwidth, Delay 등).
+- **LPM (Longest Prefix Match):** 라우팅 테이블에서 목적지 IP와 서브넷 마스크가 가장 길게 일치하는 경로를 우선 선택함.
+
+---
+
+## 8. 주소 해석 및 게이트웨이 프로세스 (Addressing Logic)
+
+### 8.1 Subnet Mask & Default Gateway
+- **Subnet Mask:** IP의 Network ID와 Host ID를 구분하는 비트 연산자임. 내부/외부망 판별 기준임.
+- **Default Gateway:** 외부 네트워크 통신을 위해 패킷을 전달하는 라우터 인터페이스 IP 주소임.
+
+### 8.2 ARP (Address Resolution Protocol) 프로세스
+1. **ARP Request (Broadcast):** 목적지 IP에 대응하는 MAC 주소 식별을 위해 전체 질의함.
+2. **ARP Reply (Unicast):** 해당 IP 보유 단말이 자신의 MAC 주소를 응답함.
+3. **ARP Cache:** 학습된 결과를 메모리에 유지하여 효율성 제고함.
+
+
+
+---
+
+## 9. 네트워크 아키텍처의 진화 (Architecture Evolution)
+
+### 9.1 Traditional 3-Tier Architecture
+- **Structure:** Core - Aggregation - Access 계층 구조임.
+- **Constraint:** L2 기반 설계 시 STP 사용으로 가용 대역폭 제한 발생함.
+
+### 9.2 Modern Spine-Leaf Architecture (Data Center)
+- **Structure:** Spine Node (Backbone) - Leaf Node (Gateway) 2계층 구조임.
+- **Mechanism:** **L3 Fabric** 구성으로 STP를 제거하고 **ECMP**로 다중 경로 동시 활용함.
+- **Effect:** 동-서(East-West) 트래픽 지연 최소화 및 선형적 확장성 보장함. 고성능 ASIC 칩의 연산력 활용함.
+
+
+
+---
+
+## 10. 실무 트러블슈팅 및 체크포인트 (Troubleshooting)
+
+| 계층 | 주요 점검 항목 (State Table) | 실무 점검 팁 및 명령어 |
+| :--- | :--- | :--- |
+| **L1/L2** | Link LED, **MAC Address Table** | `show mac address-table`로 물리 연결 및 MAC 학습 상태 우선 확인해야 함. |
+| **L3** | **IP Address**, **ARP Table**, **Routing Table** | **팁:** `arp -a` 결과에 Gateway MAC 없으면 L2/L3 단절 상태임. |
+| **L4** | **TCP Session State** | `netstat -an`으로 Port Listening 및 Established 여부 확인해야 함. |
+| **L7** | **DNS Resolve**, **Service Log** | `nslookup` 통한 도메인 해석 및 응답성 점검해야 함. |
