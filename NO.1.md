@@ -1,5 +1,3 @@
-# 📘 Network Engineering: Standard Technical Reference (음슴체 Ver.)
-
 ## 1. 네트워크 정의 및 필수 구성 요소 (Definition & Core Components)
 네트워크는 복수의 단말이 표준 프로토콜(Protocol)에 따라 상호 간 데이터 자원을 공유하도록 연결된 **데이터 전송 인프라(Data Transmission Infrastructure)**를 의미함.
 
