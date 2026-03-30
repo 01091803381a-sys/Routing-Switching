@@ -39,6 +39,7 @@
 ---
 
 ## 4. 계층 참조 모델 및 PDU (Reference Models & Protocol Data Unit)
+<img width="845" height="561" alt="image" src="https://github.com/user-attachments/assets/cdff5b61-de7c-4723-b61f-e942b7f5fb32" />
 
 | OSI 7 Layer (Full Name) | TCP/IP 4 Layer | PDU (Data Unit) | 식별 주소 및 프로토콜 |
 | :--- | :--- | :--- | :--- |
